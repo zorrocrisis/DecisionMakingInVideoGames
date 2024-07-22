@@ -41,6 +41,8 @@ public class AutonomousCharacter : NPC
 
     [Header("Decision Algorithm Options")]
     public DecisionAlgorithmActive activeAlgorithm;
+
+    [Header("MCTS Options "), Tooltip("Only alter one variable at a time")]
     public uint NumberOfPlayouts = 1;
     public bool BiasedPlayout;
     public bool LimitedPlayout;
@@ -180,14 +182,8 @@ public class AutonomousCharacter : NPC
         //SpeedUp doesn't require a target
         this.Actions.Add(new SpeedUp(this));
 
-        // Initialization of Decision Making Algorithms
-        #if UNITY_EDITOR
-            Debug.Log("Algorithm selected from Inspector...");
-        #else
-            Debug.Log("Algorithm selected from main menu...");
-            activeAlgorithm = DecisionMakingSceneParameters.algorithmToUse;
-        #endif
-
+        // Initialization of decision making Algorithms
+        DefineDecisionMakingAlgorithm();
         var worldModel = new CurrentStateWorldModel(GameManager.Instance, this.Actions, this.Goals);
         this.GOBDecisionMaking = new GOBDecisionMaking(this.Actions, this.Goals);
         this.GOAPDecisionMaking = new DepthLimitedGOAPDecisionMaking(worldModel, this.Actions, this.Goals);
@@ -363,8 +359,23 @@ public class AutonomousCharacter : NPC
                 this.GetComponent<NPC>().navMeshAgent.speed /= 2;
             }
         }
+    }
 
+    private void DefineDecisionMakingAlgorithm()
+    {
+        #if UNITY_EDITOR
+            Debug.Log("Algorithm selected from the inspector...");
+        #else
+            Debug.Log("Algorithm selected from main menu...");
+            activeAlgorithm = DecisionMakingSceneParameters.algorithmToUse;
 
+            if(activeAlgorithm == DecisionAlgorithmActive.MCTS)
+            {
+                NumberOfPlayouts = DecisionMakingSceneParameters.numberOfPlayoutsParameter;
+                BiasedPlayout = DecisionMakingSceneParameters.biasedPlayoutParameter;
+                LimitedPlayout = DecisionMakingSceneParameters.limitedPlayoutParameter;
+            }
+        #endif
     }
 
     public void AddToDiary(string s)

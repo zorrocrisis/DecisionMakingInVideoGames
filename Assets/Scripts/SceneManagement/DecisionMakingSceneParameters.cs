@@ -16,4 +16,11 @@ public static class DecisionMakingSceneParameters
 {
 
 	public static DecisionAlgorithmActive algorithmToUse;
+
+    // MCTS variables
+    public static uint numberOfPlayoutsParameter;
+    public static bool biasedPlayoutParameter;
+    public static bool limitedPlayoutParameter;
+
+    public static bool stochasticWorld;
 }

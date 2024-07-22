@@ -23,6 +23,8 @@ In Simulation:
 ## **Summary**
 With the intent of exploring decision making in video games, multiple systems were studied and developed in C# (and Unity v.2021.3.10f1). The goal of this report is to detail the thought process and justify the decisions made in terms of implementation, but also to analyse and discuss the corresponding results.
 
+![imagem](https://github.com/user-attachments/assets/6f63b778-1bbb-4e9b-b6b4-19e988c6be45)
+
 Firstly, **Behaviour Trees** were implemented to create more lifelike behaviour for Orcs, who now patrol between two positions and chase after the main character (Sir Uthgard) if they spot him. Additionally, a **Shout action was created to further create the illusion of communication between Orcs**.
 
 However, this type of behaviour followed strict and basic rules, rooting itself in a so-called **author design approach to decision making**. More complex and dynamic structures of decision making were sought-after, with a special focus on a **search approach**.

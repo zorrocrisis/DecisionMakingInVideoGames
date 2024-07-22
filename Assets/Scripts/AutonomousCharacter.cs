@@ -40,12 +40,11 @@ public class AutonomousCharacter : NPC
     public float Speed = 5.0f;
 
     [Header("Decision Algorithm Options")]
-    public bool GOBActive;
-    public bool GOAPActive;
-    public bool MCTSActive;
+    public DecisionAlgorithmActive activeAlgorithm;
     public uint NumberOfPlayouts = 1;
     public bool BiasedPlayout;
     public bool LimitedPlayout;
+
 
     [Header("Character Info")]
     public bool Resting = false;
@@ -60,12 +59,12 @@ public class AutonomousCharacter : NPC
     public List<Goal> Goals { get; set; }
     public List<Action> Actions { get; set; }
     public Action CurrentAction { get; private set; }
+
     public GOBDecisionMaking GOBDecisionMaking { get; set; }
     public DepthLimitedGOAPDecisionMaking GOAPDecisionMaking { get; set; }
     public MCTS MCTSDecisionMaking { get; set; }
 
     //private fields for internal use only
-
     private float nextUpdateTime = 0.0f;
     private float previousGold = 0.0f;
     private int previousLevel = 1;
@@ -80,17 +79,12 @@ public class AutonomousCharacter : NPC
     // Draw path settings
     private LineRenderer lineRenderer;
 
-    public void Initialize()
-    {
-    }
 
     public void Start()
     {
         //This is the actual speed of the agent
         lineRenderer = this.GetComponent<LineRenderer>();
         playerText.text = "";
-
-        this.Initialize();
 
         // Initializing UI Text
         this.BeQuickGoalText = GameObject.Find("BeQuickGoal").GetComponent<Text>();
@@ -187,11 +181,18 @@ public class AutonomousCharacter : NPC
         this.Actions.Add(new SpeedUp(this));
 
         // Initialization of Decision Making Algorithms
+        #if UNITY_EDITOR
+            Debug.Log("Algorithm selected from Inspector...");
+        #else
+            Debug.Log("Algorithm selected from main menu...");
+            activeAlgorithm = DecisionMakingSceneParameters.algorithmToUse;
+        #endif
+
         var worldModel = new CurrentStateWorldModel(GameManager.Instance, this.Actions, this.Goals);
         this.GOBDecisionMaking = new GOBDecisionMaking(this.Actions, this.Goals);
         this.GOAPDecisionMaking = new DepthLimitedGOAPDecisionMaking(worldModel, this.Actions, this.Goals);
 
-        if (MCTSActive)
+        if (activeAlgorithm == DecisionAlgorithmActive.MCTS)
         {
             //Do we want multiple playouts? If so, use the child class MCTSMultiplePlayouts
             if (NumberOfPlayouts > 1)
@@ -258,11 +259,11 @@ public class AutonomousCharacter : NPC
 
             //To have a new decision lets initialize Decision Making Proccess
             this.CurrentAction = null;
-            if (GOAPActive)
+            if (activeAlgorithm == DecisionAlgorithmActive.GOAP)
                 this.GOAPDecisionMaking.InitializeDecisionMakingProcess();
-            else if (GOBActive)
+            else if (activeAlgorithm == DecisionAlgorithmActive.GOB)
                 this.GOBDecisionMaking.InProgress = true;
-            else if (MCTSActive)
+            else if (activeAlgorithm == DecisionAlgorithmActive.MCTS)
                 this.MCTSDecisionMaking.InitializeMCTSearch();
         }
 
@@ -320,15 +321,15 @@ public class AutonomousCharacter : NPC
                 this.GetComponent<NPC>().navMeshAgent.isStopped = false;
             }
         }
-        else if (this.GOAPActive)
+        else if (activeAlgorithm == DecisionAlgorithmActive.GOAP)
         {
             this.UpdateDLGOAP();
         }
-        else if (this.GOBActive)
+        else if (activeAlgorithm == DecisionAlgorithmActive.GOB)
         {
             this.UpdateGOB();
         }
-        else if (this.MCTSActive)
+        else if (activeAlgorithm == DecisionAlgorithmActive.MCTS)
         {
             this.UpdateMCTS();
         }

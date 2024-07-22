@@ -29,8 +29,15 @@ namespace Assets.Scripts.Game.NPCs
             this.enemyStats.WeaponRange = 3;
         }
 
-
         public override void InitializeBehaviourTree()
+        {
+            FindClosestPatrolPoints();
+
+            //After finding the patrol points, we initialize our patrol movement
+            this.BehaviourTree = new PatrolTree(this, this.patrolPoint1, this.patrolPoint2, this.Target);
+        }
+
+        private void FindClosestPatrolPoints()
         {
             //Returns array of all patrol poins
             var patrolPoints = GameObject.FindGameObjectsWithTag("PatrolPoint");
@@ -57,9 +64,6 @@ namespace Assets.Scripts.Game.NPCs
                     this.patrolPoint2 = pp;
                 }
             }
-
-            //After finding the patrol points, we initialize our patrol movement
-            this.BehaviourTree = new PatrolTree(this, this.patrolPoint1, this.patrolPoint2, this.Target);
         }
 
         public void RespondToShout(Vector3 shoutPosition)
@@ -82,6 +86,21 @@ namespace Assets.Scripts.Game.NPCs
         {
             //If the formation is broken, chase the player
             this.BehaviourTree = new ChaseTree(this, this.Target);
+        }
+
+        public void Sleep()
+        {
+            // Interrupt behaviour tree 
+            Debug.Log("Sleeping...");
+            this.usingBehaviourTree = false;
+            this.StartPathfinding(transform.position);
+        }
+
+        public void AwakeFromSleeping()
+        {
+            // Continue behaviour tree
+            Debug.Log("Not sleeping anymore...");
+            this.usingBehaviourTree = true;
         }
 
     }

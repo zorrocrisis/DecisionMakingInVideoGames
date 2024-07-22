@@ -7,6 +7,7 @@ using Assets.Scripts.Game;
 using Assets.Scripts.Game.NPCs;
 using Assets.Scripts.IAJ.Unity.Formations;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,7 +38,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Enemy Settings")]
     public bool StochasticWorld;
-    public bool SleepingNPCs;
     public bool BehaviourTreeNPCs;
     public bool usingFormations;
     public bool lineFormation = true;
@@ -65,6 +65,9 @@ public class GameManager : MonoBehaviour
     private List<Monster> formationOrcs;
     private bool formationJustBroken = false;
 
+    // User interactions
+    public bool SleepingNPCs { get; set; }
+
 
     void Awake()
     {
@@ -75,7 +78,7 @@ public class GameManager : MonoBehaviour
 
         this.initialPosition = this.Character.gameObject.transform.position;
 
-        if(usingFormations && !SleepingNPCs)
+        if(usingFormations)
         {
             //Get non leaders + leader orcs to join formation (this is a bit messy...
             //Alternatively, we would find the 3 closest orcs to the dragon)
@@ -159,6 +162,11 @@ public class GameManager : MonoBehaviour
             }
             else this.disposableObjects.Add(potion.name, new List<GameObject>() { potion });
         }
+    }
+
+    void Update()
+    {
+        UserInputHandler();
     }
 
     void FixedUpdate()
@@ -482,4 +490,43 @@ public class GameManager : MonoBehaviour
     {
         return this.CheckRange(enemy, GameConstants.SPELL_RANGE);
     }
+
+    private void UserInputHandler()
+    {
+        // Control sleep of Orcs
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            ControlOrcsSleep();
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ExitToMainMenu();
+        }
+    }
+
+    private void ControlOrcsSleep()
+    {
+        if(!SleepingNPCs)
+        {
+            foreach (GameObject orc in this.orcs)
+            {
+                orc.GetComponent<Orc>().Sleep();
+                SleepingNPCs = true;
+            }
+        }
+        else
+        {
+            foreach (GameObject orc in this.orcs)
+            {
+                orc.GetComponent<Orc>().AwakeFromSleeping();
+                SleepingNPCs = false;
+            }
+        }
+    }
+
+    private void ExitToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
 }

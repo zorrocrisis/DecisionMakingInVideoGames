@@ -63,7 +63,7 @@ namespace Assets.Scripts.Game.NPCs
 
         public virtual void InitializeBehaviourTree()
         {
-            // TODO but in the children's class
+            // Done in the children's class
         }
 
         void FixedUpdate()
@@ -93,11 +93,6 @@ namespace Assets.Scripts.Game.NPCs
             else if (usingFormation)
                 this.formationManager.UpdateSlots();
             
-
-            else
-            {
-                //BUG FIXED
-            }
 
             Invoke("CheckPlayerPosition", 2.0f);
         }

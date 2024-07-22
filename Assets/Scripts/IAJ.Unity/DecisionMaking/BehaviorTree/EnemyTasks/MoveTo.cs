@@ -27,6 +27,7 @@ namespace Assets.Scripts.IAJ.Unity.DecisionMaking.BehaviorTree.EnemyTasks
 
         public override Result Run()
         {
+
             if (Target == null)
                 return Result.Failure;
 

@@ -1,9 +1,9 @@
 # Decision Making In VideoGames
-This project, originally an evaluation component for the Artificial Intelligence in Games course (2023/2024), talking place in Instituto Superior Técnico, University of Lisbon, aimed to showcase multiple **pathfinding algorithms in video games**, additionally seeking to **research and further strengthen their efficiency**. 
+This project, originally an evaluation component for the Artificial Intelligence in Games course (2023/2024), talking place in Instituto Superior Técnico, University of Lisbon, aimed to explore **decision making systems in video games**.
 
 (Main Image here)
 
-The following document indicates how to access the source code, utilise the executable application and control the program. It also contains an efficiency analysis between the pathfinding algorithms. 
+The following document indicates how to access the source code, utilise the executable application and control the program. It also contains an analysis between the decision making algorithms. 
 
 ## **Source Files and Application**
 The project's source files can be downloaded from this repository. To open the program using Unity (v.2021.3.10f1), simply clone the repository and open the project utilising Unity Hub.
@@ -22,18 +22,18 @@ Grid Map:
 - **Space** clears the grid.
 - **Left/Right arrow keys** change the current algorithm.
 
-## **Introduction**
-With the intent of exploring Decision Making in games, multiple approaches for this topic were studied and developed in C#. The goal of this report is to detail the thought process and justify the decisions made in terms of implementation, but also to analyse and discuss the corresponding results.
+## **Introduction and Features**
+With the intent of exploring decision making in video games, multiple systems were studied and developed in C# (and Unity v.2021.3.10f1). The goal of this report is to detail the thought process and justify the decisions made in terms of implementation, but also to analyse and discuss the corresponding results.
 
-Firstly, Behaviour Trees were implemented to create more lifelike behaviour for Orcs, who now patrol between two positions and chase after the main character (Sir Uthgard) if they spot him. Additionally, a Shout action was created to further create the illusion of communication between Orcs.
+Firstly, **Behaviour Trees** were implemented to create more lifelike behaviour for Orcs, who now patrol between two positions and chase after the main character (Sir Uthgard) if they spot him. Additionally, a **Shout action was created to further create the illusion of communication between Orcs**.
 
-However, this type of behaviour followed strict and basic rules, rooting itself in a so-called author design approach to decision making. More complex and dynamic structures of decision making were sought-after, with a special focus on a search approach.
+However, this type of behaviour followed strict and basic rules, rooting itself in a so-called **author design approach to decision making**. More complex and dynamic structures of decision making were sought-after, with a special focus on a **search approach**.
 
-This way, the GOB (Goal-Oriented Behaviour) and GOAP (Goal-Oriented Action Planning) decision making algorithms were implemented, alongside a few other new abilities, giving the main character the competence to dynamically select his next course of action(s). For this, four main goals were defined and then considered through insistence and an overall discontentment: Survive, Gain Level, Be Quick and Get Rich.
+This way, the **GOB (Goal-Oriented Behaviour)** and **GOAP (Goal-Oriented Action Planning)** decision making algorithms were implemented, alongside a few other new abilities, giving the main character the competence to dynamically select their next course of action(s). For this, **four main goals were defined and then considered through insistence and an overall discontentment**: Survive, Gain Level, Be Quick and Get Rich.
 
-The MCTS (Monte Carlo Tree Search) decision making algorithm allowed for a new perspective, relying on an equilibrium between exploration and exploitation of game states (including future ones). Moreover, some optimizations for MCTS were developed, including MCTS with Multiple Playouts, MCTS with Biased Playouts and MCTS with Limited Playouts, all of which take into consideration the importance and impact of the Playout phase of this algorithm.
+The **MCTS (Monte Carlo Tree Search)** decision making algorithm allowed for a new perspective, relying on an **equilibrium between exploration and exploitation of game states (including future ones)**. Moreover, some optimizations for MCTS were developed, including MCTS with Multiple Playouts, MCTS with Biased Playouts and MCTS with Limited Playouts, all of which take into consideration the importance and impact of the Playout phase of this algorithm.
 
-Finally, the behaviour of the Orcs was once again worked on with the addition of coordinated movement - Formations
+Finally, the behaviour of the Orcs was once again worked on with the addition of **coordinated movement - formations**.
 
 ## **Level 1 - Behaviour Trees**
 The patrol behaviour developed for the Orcs can be easily turned on by selecting the Behaviour Tree NPCs field, on the Manager’s Inspector window.

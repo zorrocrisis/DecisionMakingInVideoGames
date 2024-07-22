@@ -374,7 +374,7 @@ public class AutonomousCharacter : NPC
                 NumberOfPlayouts = DecisionMakingSceneParameters.numberOfPlayoutsParameter;
                 BiasedPlayout = DecisionMakingSceneParameters.biasedPlayoutParameter;
                 LimitedPlayout = DecisionMakingSceneParameters.limitedPlayoutParameter;
-            }
+            }     
         #endif
     }
 

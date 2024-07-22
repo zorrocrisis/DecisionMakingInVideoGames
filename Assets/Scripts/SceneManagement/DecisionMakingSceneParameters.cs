@@ -11,11 +11,19 @@ public enum DecisionAlgorithmActive
     MCTS
 }
 
+public enum FormationsActive
+{
+    None,
+    Line,
+    Triangle
+}
+
 
 public static class DecisionMakingSceneParameters
 {
 
 	public static DecisionAlgorithmActive algorithmToUse;
+    public static FormationsActive formationsToUse;
 
     // MCTS variables
     public static uint numberOfPlayoutsParameter;

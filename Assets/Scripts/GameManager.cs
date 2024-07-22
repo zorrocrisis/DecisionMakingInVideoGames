@@ -78,19 +78,21 @@ public class GameManager : MonoBehaviour
 
         this.initialPosition = this.Character.gameObject.transform.position;
 
+        DefineWorldAndFormations();
+
         if(usingFormations)
         {
-            //Get non leaders + leader orcs to join formation (this is a bit messy...
+            //Get non leaders + leader orcs to join formation (this is a bit messy...)
             //Alternatively, we would find the 3 closest orcs to the dragon)
-            GameObject orcLeader = GameObject.Find("Orc2");
-            GameObject orc4 = GameObject.Find("Orc0");
-            GameObject orc5 = GameObject.Find("Orc1");
+            GameObject orcLeader = GameObject.Find("FormationLeader");
+            GameObject orcMinion1 = GameObject.Find("FormationMinion1");
+            GameObject orcMinion2 = GameObject.Find("FormationMinion2");
 
             //Get their monster components (needed for formation manager)
             this.formationOrcs = new List<Monster>();
             this.formationOrcs.Add(orcLeader.GetComponent<Monster>());
-            this.formationOrcs.Add(orc4.GetComponent<Monster>());
-            this.formationOrcs.Add(orc5.GetComponent<Monster>());
+            this.formationOrcs.Add(orcMinion1.GetComponent<Monster>());
+            this.formationOrcs.Add(orcMinion2.GetComponent<Monster>());
 
             //Get anchor point
             var anchorPoint = GameObject.Find("Anchor1");
@@ -111,6 +113,41 @@ public class GameManager : MonoBehaviour
             this.formationPatrol = new FormationPatrol(this.formationManager, anchorPoint);
         }
         
+    }
+
+    private void DefineWorldAndFormations()
+    {
+        GameObject formationOrcsParent = GameObject.Find("FormationOrcs");
+        GameObject nonFormationOrcsParent = GameObject.Find("NonFormationOrcs");
+
+        #if UNITY_EDITOR
+            Debug.Log("World and Formations selected from the inspector...");
+            formationOrcsParent.SetActive(usingFormations);
+            nonFormationOrcsParent.SetActive(!usingFormations);
+        #else
+            Debug.Log("World and Formations selected from main menu...");
+            StochasticWorld = DecisionMakingSceneParameters.stochasticWorld; 
+
+            switch(DecisionMakingSceneParameters.formationsToUse)
+            {
+                case (FormationsActive.None):
+                    usingFormations = false;
+                    break;
+                case (FormationsActive.Line):
+                    usingFormations = true;
+                    lineFormation = true;
+                    triangleFormation = false;
+                    break;
+                case (FormationsActive.Triangle):
+                    usingFormations = true;
+                    lineFormation = false;
+                    triangleFormation = true;
+                    break;
+            }
+        #endif
+
+        formationOrcsParent.SetActive(usingFormations);
+        nonFormationOrcsParent.SetActive(!usingFormations);
     }
 
     public void UpdateDisposableObjects()

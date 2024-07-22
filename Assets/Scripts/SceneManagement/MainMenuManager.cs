@@ -127,7 +127,8 @@ public class MainMenuManager : MonoBehaviour
         MCTSOptionsPanel.SetActive(false);
         playoutsSliderPanel.SetActive(false);
         worldPanel.SetActive(true);
-        algorithmOptionsPanel.SetActive(true);
+        backPanel.SetActive(true);
+        algorithmOptionsPanel.SetActive(false);
     }
 
     private void InitiateEnemySettingsMenu()
@@ -137,19 +138,19 @@ public class MainMenuManager : MonoBehaviour
 
     public void LineFormation()
     {
-        // MISSING BOOL
+        DecisionMakingSceneParameters.formationsToUse = FormationsActive.Line;
         InitiateNextScene();
     }
 
     public void TriangleFormation()
     {
-        // MISSING BOOL
+        DecisionMakingSceneParameters.formationsToUse = FormationsActive.Triangle;
         InitiateNextScene();
     }
 
     public void NoFormation()
     {
-        // MISSING BOOL
+        DecisionMakingSceneParameters.formationsToUse = FormationsActive.None;
         InitiateNextScene();
     }
 

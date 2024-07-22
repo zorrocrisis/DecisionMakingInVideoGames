@@ -15,12 +15,9 @@ To test the application, only the files contained in the "Build" folder are nece
 Main Menu:
 - **LMB** interacts with the main menu's buttons, selecting the grid size and exiting the application.
 
-Grid Map:
+In Simulation:
 - **Esc** exits to the main menu.
-- **1-3** begins the pathfinding with pre-defined starting and goal positions.
-- **LMB** selects the starting and goal positions for a new pathfinding search.
-- **Space** clears the grid.
-- **Left/Right arrow keys** change the current algorithm.
+- **Space** enables/disables NPCs' sleeping state (interrupts behaviour trees for orcs).
 
 ## **Introduction and Features**
 With the intent of exploring decision making in video games, multiple systems were studied and developed in C# (and Unity v.2021.3.10f1). The goal of this report is to detail the thought process and justify the decisions made in terms of implementation, but also to analyse and discuss the corresponding results.
@@ -35,18 +32,16 @@ The **MCTS (Monte Carlo Tree Search)** decision making algorithm allowed for a n
 
 Finally, the behaviour of the Orcs was once again worked on with the addition of **coordinated movement - formations**.
 
-## **Level 1 - Behaviour Trees**
-The patrol behaviour developed for the Orcs can be easily turned on by selecting the Behaviour Tree NPCs field, on the Manager’s Inspector window.
+## **Level 1 - Behaviour Trees for Orcs**
+The implementation of the patrol behaviour started by editing the *Orc* class, so each specific instance of said class could find the two closest **patrol points**. These patrol points, which can be moved around using the editor, were created manually through Unity and are represented as **green circles**.
 
-The implementation of this behaviour started by editing the Orc class, so each specific instance of said class could find the two closest patrol points. These patrol points were created manually through Unity and are represented as green spots/circles across the map.
+A ***Patrol Tree*** was then created to define the patrol itself. The *Patrol Tree* is, in essence, a *Sequence* composite task with two *Selector* composite tasks as its leaves. Each of these Selector tasks is also formed by a *Chase Tree*, which **handles the detection and pursuit of the player** (until they are too far away) and the *MoveTo* task, which is the **basis for the movement between patrol points**. This type of structure **allows the orcs to chase after Sir Uthgard if they spot him after reaching a patrol point**.
 
-A Patrol Tree was then created to define the patrol itself. The Patrol Tree is, in essence, a Sequence composite task with two Selector composite tasks as its leaves. Each of these Selector tasks is also formed by a Chase Tree, which handles the detection and pursuit of the player (until he’s too far away) and the MoveTo task, which is the basis for the movement between patrol points. This type of structure allows for the orcs to chase after Sir Uthgard if they spot him after reaching a patrol point.
+Within the *Chase Tree*, there’s also a ***Shout action***. **By detecting the player, a patrolling orc will shout (audio and visual cue are present), making the remaining orcs move to the location from which the shout came from**. After reaching their destination, if the orcs don’t spot the player, they will resume their normal patrol behaviour.
 
-Within the Chase Tree, there’s also a Shout action. By detecting the player, a patrolling orc will shout (audio and visual cue are present), making the remaining orcs move to the location from which the shout came from. After reaching their destination, if the orcs don’t spot the player, they will resume their normal patrol behaviour.
+To account for this new action, the *RespondToShout* and *ResumeFromShout* methods were implemented inside the Orc class. As their names suggest, they are relevant to briefly interrupt the behaviour tree execution while a shout is investigated and to resume the patrol movement once the orc reaches the shout location.
 
-To account for this new action, the RespondToShout and ResumeFromShout methods were implemented inside the Orc class. As their names suggest, they are relevant to briefly interrupt the behaviour tree execution while a shout is investigated and to resume the patrol movement once the orc reaches the shout location.
-
-A few notes should be taken regarding this level: perhaps the implementation of an Interruptor task would make for a smoother transition between behaviours and allow the detection of the player during the patrol (and not only after reaching a patrol point). The presence of multiple orcs in the same area (for example, with formations enabled) might also lead to the occurrence of a loop of shouts…
+A few notes should be taken regarding this level: perhaps the implementation of an Interruptor task would make for a smoother transition between behaviours and allow the detection of the player during the patrol (and not only after reaching a patrol point). The presence of multiple orcs in the same area (for example, with formations enabled) can also lead to the occurrence of a loop of shouts…
 
 ## **Level 2 - GOB and GOAP**
 After implementing the Overall Utility GOB decision making algorithm, which calculates an overall discontentment value and considers only the best next action to perform, we can point out that:

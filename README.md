@@ -87,6 +87,7 @@ Lastly, the **MCST with Limited Playouts** aims to increase the efficiency of MC
 ## **Level 5 - Formations For Orcs **
 Through the main menu, it is also possible to turn on line and triangle formations for the orc enemies, thus displaying **coordinated movement which is only interrupted once the patrolling squad of monsters detect the player**.
 
+![orcline](https://github.com/user-attachments/assets/e26c6a6d-c6df-4a7a-bb6b-4130a07da163)
 ![imagem](https://github.com/user-attachments/assets/d7adae22-1fae-445d-abd0-a0c335e30018)
 
 The NPC squad, composed of a leader and two followers, traverse the environment in the desired formation, following an invisible *NavMeshAgent* – the anchor - that moves between two formation patrol points, which are visually represented by two red squares on the map. The anchor is represented by a yellow diamond shape, which in turn is followed by two blue circles, showcasing the expected positions of the following NPCs. These representations were purposedly kept in so visualising the formation movement could be easier.

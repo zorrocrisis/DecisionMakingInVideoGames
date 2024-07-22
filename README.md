@@ -63,7 +63,7 @@ The **Depth Limited GOAP** algorithm eliminates some of the disadvantages of hav
 
 Finally, **increasing the depth limit of the algorithm also gives rise to a higher number of action combinations**, although this change **can worsen the downfalls mentioned above since the algorithm looks further into the future, which decreases the relevance of short-term actions**.
 
-## **Level 4 - MCTS**
+## **Level 4 - MCTS (Monte Carlo Tree Search)**
 While the GOB and GOAP algorithms both depend on discontentment (heuristics) to find the best possible actions or sequence of actions, the vanilla MCTS (Monte Carlo Tree Search) is not dependent on this and **works well in an isolated environment, where all it has to work with is the game information** (game mechanics/functionalities, states and so on).
 
 Combining both exploration and exploitation to focus on selecting the most promising children (and the most promising sub-trees) and expanding unvisited ones, this algorithm **rests its fundaments on playouts, through which future world states are simulated by applying random actions** and, after reaching a terminal state, a win ratio is associated with each node visited, during the backpropagation phase.

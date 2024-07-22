@@ -1,7 +1,7 @@
 # Decision Making In VideoGames
 This project, originally an evaluation component for the Artificial Intelligence in Games course (2023/2024), talking place in Instituto Superior Técnico, University of Lisbon, aimed to explore **decision making systems in video games**.
 
-(Main Image here)
+![Uthgard](https://github.com/user-attachments/assets/189abaeb-688d-48de-a60d-a3c427446d32)
 
 The following document indicates how to access the source code, utilise the executable application and control the program. It also contains an analysis between the decision making algorithms. 
 
@@ -20,7 +20,7 @@ In Simulation:
 - **Space** enables/disables NPCs' sleeping state (by default, NPCs are active).
 
 
-## **Introduction and Features**
+## **Summary**
 With the intent of exploring decision making in video games, multiple systems were studied and developed in C# (and Unity v.2021.3.10f1). The goal of this report is to detail the thought process and justify the decisions made in terms of implementation, but also to analyse and discuss the corresponding results.
 
 Firstly, **Behaviour Trees** were implemented to create more lifelike behaviour for Orcs, who now patrol between two positions and chase after the main character (Sir Uthgard) if they spot him. Additionally, a **Shout action was created to further create the illusion of communication between Orcs**.
@@ -84,29 +84,36 @@ Regarding the **MCTS with Biased Playouts**, **heuristic information related to 
 
 Lastly, the **MCST with Limited Playouts** aims to increase the efficiency of MCTS by **limiting the depth of playouts and using a heuristic function to estimate the quality of the world state reached**, which replaces the usual reward value. The heuristic function was implemented in the *FutureStateWorldModel* class and takes into account important stats of the main character in the simulated world state (health points, level and money) which hint to a possible victory or simply a favourable position to be in. This function consists of a weighted sum of these stats, with the resulting heuristic value being normalized and finally returned.
 
-## **Level 5 - Formations**
-To use formations, besides generating the new grid – DungeonGridFormation - one must go into the Manager’s inspector window and turn on the Using Formations option, as well as choose the type of formation wanted – Line Formation or Triangle Formation. Turning on one of theses fields without selecting the other will result in errors.
+## **Level 5 - Formations For Orcs **
+Through the main menu, it is also possible to turn on line and triangle formations for the orc enemies, thus displaying **coordinated movement which is only interrupted once the patrolling squad of monsters detect the player**.
 
-Once the formation has been chosen, the corresponding NPCs (Orcs 3, 4 and 5) will move in the desired formation, following an invisible NavMeshAgent – the anchor - that moves between two formation patrol points, which are visually represented by two red squares on the map. These patrol points can be moved around so that the orcs follow a different path. The anchor is also represented by a yellow diamond shape. These representations were purposedly kept in so that visualizing the formation movement could be easier.
+![imagem](https://github.com/user-attachments/assets/d7adae22-1fae-445d-abd0-a0c335e30018)
 
-In order to implement the patrol movement, instances of the FormationManager and FormationPatrol classes were initialized in the GameManager, considering the type of formation wanted and associating these instances with the orcs mentioned above. The FormationPatrol class was created to manage the movement anchor point between the two formation patrol points update the slot locations, which would then be the used as parameters in the MoveTo function, invoked through the UpdateSlots method of the FormationManager. Finally, both the GameManager and the FormationPatrol work together to ensure that if the player gets too close to the anchor point (and to the formation itself), the formation is disbanded, and the orcs resume their normal behaviour.
+The NPC squad, composed of a leader and two followers, traverse the environment in the desired formation, following an invisible *NavMeshAgent* – the anchor - that moves between two formation patrol points, which are visually represented by two red squares on the map. The anchor is represented by a yellow diamond shape, which in turn is followed by two blue circles, showcasing the expected positions of the following NPCs. These representations were purposedly kept in so visualising the formation movement could be easier.
 
-Both LineFormation and TriangleFormation classes have different GetOrientation and GetSlotLocation methods – the first method using the orc leader’s (Orc 3) orientation to calculate a vector that can be utilized to calculate each slot location.
+In order to implement the patrol movement, instances of the *FormationManager* and *FormationPatrol* classes were initialized in the *GameManager*, considering the type of formation wanted and associating these instances with the orcs mentioned above. The *FormationPatrol* class was created to manage the movement of the anchor point between the two formation patrol points. Finally, both the *GameManager* and the *FormationPatrol* work together to ensure that if the player gets too close to the anchor point (and to the formation itself), the formation is disbanded, and the orcs resume their normal behaviour (which would be attacking the main character).
 
 Some notes can be taken regarding these implementations:
 
-- Although the triangle formation does indeed work as intended, it has a scalability issue, as most fixed formations do – in its current state, we need to implement a different expression for each orc belonging to the formation.
+- Although the triangle formation does indeed work as intended, it has a scalability issue, as most fixed formations do – in its current state, it is necessary to implement a different expression for each orc belonging to the formation.
 
 - Secondly, its common to verify unexpected behaviours following this logic for formations since the slots can often go out of bounds/go through walls, leading to a seemingly odd movement from certain formation elements, especially in tight passageways. This can be somewhat mitigated by decreasing the offset variable inside each formation class.
 
-(Image with formation bug)
+## **Final Thoughts**
+It is clear that **most of the non-traditional decision making algorithms need long processes of playtesting and balancing – from deciding how goal values change with actions, to heuristics and change rates, the almost infinite combinations can lead to extremely diverse results**. This way, the implementation of these algorithms should be carefully studied and fully documented to have a deep knowledge of how each variable affects the results. As an example, Pray, which impacted the health points and had a considerable duration, led to multiple balancing issues since Sir Uthgard abused this action.
 
-## **Last Level - Some Comments**
-Firstly, it is clear that most of the non-traditional decision making algorithms need long and great processes of playtesting and balancing – from deciding how goal values change with actions, to heuristics and change rates, the almost infinite combinations can lead to extremely diverse results. This way, the implementation of these algorithms should be carefully studied and fully documented to have a deep knowledge of how each variable affects the results. As an example, Pray, which impacted the HP and had a considerable duration, led to multiple balancing issues since Sir Uthgard abused this action.
+Secondly, we can state that **although non-traditional decision making algorithms tend to avoid author design, instead relying on a search approach, there are ways of improving the decision making process through author design implementations**. One such example would be the heuristic functions created for the MCTS variants, which are based on what the author thinks is better (and not necessarily the program thinking for itself).
 
-Secondly, we can state that although non-traditional decision making algorithms tend to avoid author design, instead relying on a search approach, there are ways of improving the decision making process through author design implementations. One such example would be the heuristic functions created for the MCTS variants, which are based on what the author thinks is better (and not necessarily the program thinking for itself).
+# **Brief Explanation of Sir Uthgard's Abilities**
+- Sword Attack - can only be performed at melee range, and monsters will attack Uthgard back. Attacking an enemy will decrease Uthgard's health according to their type, as specified above. The enemy will be dead, and the character will gain experience points (XP) accordingly.
+  
+- Divine Smite - only usable against undead (skeletons), this ranged special attack allows Uthgard to kill an undead immediately without suffering any damage. It uses 2 mana for each attack.
+  
+- Speed Up (only available after Sir Uthgard attains level 2) - Uthgard's movement speed is doubled at the cost of 5 Mana. This power up only lasts 10 seconds.
 
-Lastly, it is worth noticing that some values were changed to prevent small bugs across the project – the radius of the orcs’ NavMeshAgents was reduced to avoid collisions during formations, the dragon’s scale was reduced so Sir Uthgard could reach him (although this resets when changing grid)…
+- Shield of Faith - gives a temporary 5 HP Shield that stacks on top of Uthgard's HP. Whenever you take damage, damage is first deducted from the Shield and the remaining damage (if any) is then deducted from Uthgard's HP. If Uthgard recasts Shield of Faith while under the effect of a shield of faith, the new shield will replace the old one. Costs 5 mana points.
+  
+- Pray - Utghard can pray for 5 seconds, and recover 2 HP at the end of this period.
 
 ## **Authors and Acknowledgements**
 

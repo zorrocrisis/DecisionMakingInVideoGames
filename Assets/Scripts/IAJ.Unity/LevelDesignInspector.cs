@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(LevelCreator))]
-public class LevelDesignInspector : Editor
-{
-    // This is were we can create our own custom inspector which allows us to instanteate and destroy the map objects
-    public override void OnInspectorGUI()
+#if UNITY_ENGINE
+
+    [CustomEditor(typeof(LevelCreator))]
+    public class LevelDesignInspector : Editor
     {
-        base.OnInspectorGUI();
-
-        LevelCreator manager = (LevelCreator)target;
-
-        if(GUILayout.Button("Generate Map"))
+        // This is were we can create our own custom inspector which allows us to instanteate and destroy the map objects
+        public override void OnInspectorGUI()
         {
-            manager.LoadGrid();
-            manager.GridMapVisual();
-        }
+            base.OnInspectorGUI();
 
-        if (GUILayout.Button("Clean Map"))
-        {
-            manager.CleanMap();
+            LevelCreator manager = (LevelCreator)target;
+
+            if(GUILayout.Button("Generate Map"))
+            {
+                manager.LoadGrid();
+                manager.GridMapVisual();
+            }
+
+            if (GUILayout.Button("Clean Map"))
+            {
+                manager.CleanMap();
+            }
         }
-    }
    
-}
+    }
+#endif 

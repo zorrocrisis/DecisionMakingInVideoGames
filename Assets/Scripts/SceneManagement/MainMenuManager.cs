@@ -15,6 +15,8 @@ public class MainMenuManager : MonoBehaviour
     public GameObject playoutsSliderPanel;
     public GameObject worldPanel;
     public GameObject enemyPanel;
+    public GameObject abilitiesPanel;
+    public GameObject abilitiesExplanation;
 
 
     // Auxliary variables
@@ -29,6 +31,7 @@ public class MainMenuManager : MonoBehaviour
         playoutsSliderPanel.SetActive(false);
         worldPanel.SetActive(false);
         enemyPanel.SetActive(false);
+        abilitiesExplanation.SetActive(false);
 
         playoutText = playoutsSliderPanel.GetComponentInChildren<Text>();
         playoutSlider = playoutsSliderPanel.GetComponentInChildren<Slider>();
@@ -52,6 +55,7 @@ public class MainMenuManager : MonoBehaviour
         algorithmOptionsPanel.SetActive(false);
         backPanel.SetActive(true);
         MCTSOptionsPanel.SetActive(true);
+        abilitiesPanel.SetActive(false);
     }
 
     public void BackFromMCTSMenu()
@@ -62,6 +66,8 @@ public class MainMenuManager : MonoBehaviour
         worldPanel.SetActive(false);
         algorithmOptionsPanel.SetActive(true);
         enemyPanel.SetActive(false);
+        abilitiesPanel.SetActive(true);
+        abilitiesExplanation.SetActive(false);
     }
 
     public void InitiateVanillaMCTS()
@@ -128,6 +134,7 @@ public class MainMenuManager : MonoBehaviour
         playoutsSliderPanel.SetActive(false);
         worldPanel.SetActive(true);
         backPanel.SetActive(true);
+        abilitiesPanel.SetActive(false);
         algorithmOptionsPanel.SetActive(false);
     }
 
@@ -152,6 +159,14 @@ public class MainMenuManager : MonoBehaviour
     {
         DecisionMakingSceneParameters.formationsToUse = FormationsActive.None;
         InitiateNextScene();
+    }
+
+    public void InitiatiteAbilityMenu()
+    {
+        backPanel.SetActive(true);
+        abilitiesPanel.SetActive(false);
+        algorithmOptionsPanel.SetActive(false);
+        abilitiesExplanation.SetActive(true);
     }
 
     private void InitiateNextScene()

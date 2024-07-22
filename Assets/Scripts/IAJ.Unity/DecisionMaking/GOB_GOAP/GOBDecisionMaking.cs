@@ -17,7 +17,7 @@ namespace Assets.Scripts.IAJ.Unity.DecisionMaking.GOB
         {
             this.actions = _actions;
             this.goals = goals;
-            secondBestAction = new Action("yo");
+            secondBestAction = new Action("Deciding...");
         }
 
 

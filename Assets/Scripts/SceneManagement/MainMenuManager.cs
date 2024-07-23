@@ -190,9 +190,4 @@ public class MainMenuManager : MonoBehaviour
         playoutNumber = (uint)playoutSlider.value;
         playoutText.text = "MCTS with " + playoutNumber + " Playouts" ;
     }
-
-
-
-    // FORMATION ???
-    // STOCHASTIC WORLD???
 }

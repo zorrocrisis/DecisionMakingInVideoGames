@@ -1,5 +1,5 @@
 # Decision Making In VideoGames
-This project, originally an evaluation component for the Artificial Intelligence in Games course (2023/2024), talking place in Instituto Superior Técnico, University of Lisbon, aimed to explore **decision making systems in video games**.
+This project, originally an evaluation component for the Artificial Intelligence in Games course (2022/2023), talking place in Instituto Superior Técnico, University of Lisbon, aimed to explore **decision making systems in video games**.
 
 ![Uthgard](https://github.com/user-attachments/assets/189abaeb-688d-48de-a60d-a3c427446d32)
 
